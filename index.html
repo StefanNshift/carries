@@ -1,0 +1,607 @@
+            <!DOCTYPE html>
+            <html lang="en">
+            <head>
+                <meta charset="UTF-8" />
+                <title>Carrier By team</title>
+                <link rel="icon" type="image/ico" href="assets/images/favicon.ico" />
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
+                <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+                crossorigin="anonymous"
+                />
+                <style>
+                    @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+    
+                    * {
+                        box-sizing: border-box;
+                        margin: 0;
+                        padding: 0;
+                    }
+    
+                    * {
+                        box-sizing: border-box;
+                        -webkit-box-sizing: border-box;
+                        -moz-box-sizing: border-box;
+                        font-family: "Poppins", sans-serif;
+                        font-optical-sizing: auto;
+                    }
+    
+                    /* Table Styles */
+    
+                    .table-wrapper {
+                        box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+                    }
+
+                    table th {
+                        background-color: rgb(1, 11, 59);
+
+                    }
+    
+                    .fl-table {
+                        border-radius: 5px;
+                        font-weight: normal;
+                        border: none;
+                        border-collapse: collapse;
+                        width: 100%;
+                        max-width: 100%;
+                        white-space: nowrap;
+                        background-color: white;
+                    }
+    
+                    .fl-table td,
+                    .fl-table th {
+                        text-align: center;
+                        padding: 8px;
+                    }
+    
+                    .fl-table td {
+                        border-right: 1px solid #f8f8f8;
+                        font-size: 15px;
+                    }
+    
+                    .fl-table thead th {
+                        color: #ffffff;
+                    }
+    
+                    .fl-table thead th:nth-child(odd) {
+                        color: #ffffff;
+                    }
+    
+                    .fl-table tr:nth-child(even) {
+                        background: #f8f8f8;
+                    }
+                    .card-body {
+                        box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+                        rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+                    }
+                    /* Responsive */
+    
+                    @media (max-width: 767px) {
+                        .fl-table {
+                        display: block;
+                        width: 100%;
+                        }
+                        .table-wrapper:before {
+                        content: "Scroll horizontally >";
+                        display: block;
+                        text-align: right;
+                        font-size: 11px;
+                        color: white;
+                        padding: 0 0 10px;
+                        }
+                        .fl-table thead,
+                        .fl-table tbody,
+                        .fl-table thead th {
+                        display: block;
+                        }
+                        .fl-table thead th:last-child {
+                        border-bottom: none;
+                        }
+                        .fl-table thead {
+                        float: left;
+                        }
+                        .fl-table tbody {
+                        width: auto;
+                        position: relative;
+                        overflow-x: auto;
+                        }
+                        .fl-table td,
+                        .fl-table th {
+                        padding: 20px 0.625em 0.625em 0.625em;
+                        height: 60px;
+                        vertical-align: middle;
+                        box-sizing: border-box;
+                        overflow-x: hidden;
+                        overflow-y: auto;
+                        width: 120px;
+                        font-size: 13px;
+                        text-overflow: ellipsis;
+                        }
+                        .fl-table thead th {
+                        text-align: left;
+                        border-bottom: 1px solid #f7f7f9;
+                        }
+                        .fl-table tbody tr {
+                        display: table-cell;
+                        }
+                        .fl-table tbody tr:nth-child(odd) {
+                        background: none;
+                        }
+                        .fl-table tr:nth-child(even) {
+                        background: transparent;
+                        }
+                        .fl-table tr td:nth-child(odd) {
+                        background: #f8f8f8;
+                        border-right: 1px solid #e6e4e4;
+                        }
+                        .fl-table tr td:nth-child(even) {
+                        border-right: 1px solid #e6e4e4;
+                        }
+                        .fl-table tbody td {
+                        display: block;
+                        text-align: center;
+                        }
+                    }
+    
+                    /* Container för filterfältet */
+                    .filter-container {
+                        padding: 20px;
+                        background-color: #f8f9fa; /* Lätt bakgrundsfärg */
+                        border-bottom: 2px solid #dee2e6; /* Gräns under filterfältet */
+                        margin-bottom: 10px; /* Utrymme under filterfältet */
+                    }
+    
+                    /* Stilar för själva filterinmatningsfältet */
+                    #tableFilter {
+                        width: 100%; /* Full bredd inom sin container */
+                        padding: 10px; /* Lite utrymme inuti fältet */
+                        margin-top: 5px; /* Utymme överst */
+                        margin-bottom: 15px; /* Utymme nedtill */
+                        border: 1px solid #ced4da; /* Subtil gräns */
+                        border-radius: 5px; /* Rundade hörn */
+                        font-size: 16px; /* Läsbar fontstorlek */
+                    }
+    
+                    /* Stilar för tabellens container */
+                    .table-container {
+                        padding: 20px; /* Utymme inuti container */
+                    }
+    
+                    /* För att förbättra utseendet på tabellen */
+                    .table {
+                        border-collapse: collapse; /* Tar bort mellanrum mellan celler */
+                        width: 100%; /* Full bredd */
+                        background-color: #fff; /* Vit bakgrund för kontrast */
+                    }
+    
+                    .table thead th {
+                        background-color: #007bff; /* Mörkare bakgrundsfärg för header */
+                        color: white; /* Vit textfärg */
+                        padding: 15px; /* Utymme inuti headerceller */
+                        text-align: left; /* Texten vänsterjusteras */
+                    }
+    
+                    .table tbody td {
+                        padding: 15px; /* Utymme inuti kroppsceller */
+                        border-top: 1px solid #dee2e6; /* Horisontell linje mellan rader */
+                    }
+    
+                    /* Knappstilar */
+                    .btn {
+                        padding: 10px 15px; /* Utymme inuti knappar */
+                        border: none; /* Tar bort gräns */
+                        border-radius: 5px; /* Rundade hörn */
+                        cursor: pointer; /* Förändrar muspekaren till en pekare */
+                        font-size: 16px; /* Större text för bättre läsbarhet */
+                    }
+    
+                    /* Lägger till hover-effekter på knappar */
+                    .btn:hover {
+                        opacity: 0.85; /* Lätt genomskinlighet vid hover */
+                    }
+    
+                    /* Lägger till stilar specifikt för 'Edit' knappen */
+                    .btn-primary {
+                        background-color: #007bff; /* Primär färg */
+                        color: white; /* Vit text */
+                    }
+    
+                    /* Lägger till stilar specifikt för 'Save' knappen */
+                    .btn-success {
+                        background-color: #28a745; /* Grön, 'success' färg */
+                        color: white; /* Vit text */
+                    }
+    
+                    /* Lägger till stilar specifikt för 'Delete' knappen */
+                    .btn-danger {
+                        background-color: #dc3545; /* Röd, 'danger' färg */
+                        color: white; /* Vit text */
+                    }
+    
+                    /* Lägger till en viss stil när en knapp är inaktiv */
+                    .btn:disabled {
+                        background-color: #6c757d; /* Mörk grå */
+                        color: #fff; /* Vit text */
+                        cursor: not-allowed; /* Cursor som indikerar att något inte är tillåtet */
+                    }
+                    .delete-btn {
+                        display: none; /* Dölj delete-knappen som standard */
+                    }
+    
+                    .edit-actions {
+                        display: none; /* Göm 'Delete' och 'Save' knapparna som standard */
+                    }
+    
+                    .team-Jelly-bear {
+                        background-color: #adc8e6 !important;
+                    }
+    
+                    .team-Mafia {
+                        background-color: #e6adc8 !important;
+                    }
+                    .button-success,
+        .button-error,
+        .button-warning,
+        .button-secondary {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+        }
+
+        .button-success {
+            background: rgb(28, 184, 65);
+            /* this is a green */
+        }
+
+        .button-success:hover {
+            background: rgb(98, 184, 65);
+            /* this is a green */
+        }
+
+
+        .button-error {
+            background: rgb(202, 60, 60);
+            /* this is a maroon */
+        }
+
+        .button-error:hover {
+            background: rgb(216, 60, 60);
+            /* this is a maroon */
+        }
+
+        .button-warning {
+            background: rgb(108 108 108)
+            /* this is an orange */
+        }
+
+        .button-warning:hover {
+            background:rgb(68 66 66)
+            /* this is an orange */
+        }
+
+
+        .button-secondary {
+            background: rgb(66, 184, 221);
+            /* this is a light blue */
+        }
+                    </style>
+            </head>
+            <body class="container">
+                
+                <div class="container">
+                <h2 class="text-primary" style="margin-left: 15px; margin-bottom: 10px">
+                    Carriers Account
+                </h2>
+                <div class="row">
+                    <div class="col-lg-4">
+                    <form class="container" id="contactForm">
+                        <div class="card">
+                        <div class="card-body">
+                            <div class="form-group">
+                            <label for="exampleFormControlInput1">Carrier Name</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="carrier"
+                                placeholder="Enter Carrier"
+                            />
+                            </div>
+
+                            <div class="form-group">
+                            <label for="exampleFormControlInput1">Concept ID</label>
+                            <input
+                                type="number"
+                                class="form-control"
+                                id="carrierConceptID"
+                                placeholder="Enter CIS - Ship	"
+                            />
+                            </div>
+                            <div class="form-group">
+                            <label for="exampleFormControlInput1">CIS - Ship</label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="cis"
+                                placeholder="Enter CIS"
+                            />
+                            </div>
+                            <div class="form-group">
+                            <label for="exampleFormControlSelect1">Select Team</label>
+                            <select class="form-control" id="team">
+                                <option value="Mafia">Mafia</option>
+                                <option value="Jelly Bears">Jelly Bears</option>
+                            </select>
+                            </div>
+                            <div class="form-group">
+                            <label for="exampleFormControlSelect1">Select Teir</label>
+                            <select class="form-control" id="tier">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                            </div>
+
+                            <button
+                            style="margin-left: 0px"
+                            type="submit"
+                            class="btn btn-primary"
+                            style="margin-left: 15px; margin-top: 10px"
+                            >
+                            Add
+                            </button>
+                        </div>
+                        </div>
+                    </form>
+                    </div>
+                    <div class="col-lg-8">
+                    <div class="container mt-5" id="currentCarriers">
+                        <div class="">
+                        <input
+                            type="text"
+                            id="tableFilter"
+                            placeholder="Search Carrier Name or ID..."
+                        />
+                        </div>
+                        <div class="table-wrapper">
+                        <table class="fl-table">
+                            <thead>
+                            <tr>
+                                <th>Carrier</th>
+                                <th>Carrier Concept ID</th>
+                                <th>CIS - Ship</th>
+
+                                <th>Team</th>
+                                <th>Tier</th>
+                                <th>Edit</th>
+                                <th class="hideBtn">Delete</th>
+                                <th class="hideBtn">Save</th>
+                            </tr>
+                            </thead>
+                            <tbody id="carrierList"></tbody>
+                        </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+                <script src="https://www.gstatic.com/firebasejs/3.7.4/firebase.js"></script>
+                <script>
+                let firebaseConfig = {
+                    apiKey: "AIzaSyBM86VHgV1DFkvty7easa9qwZO9AuJvrvY",
+                    authDomain: "carriers-83992.firebaseapp.com",
+                    projectId: "carriers-83992",
+                    databaseURL: "https://carriers-83992-default-rtdb.firebaseio.com/",
+
+                    storageBucket: "carriers-83992.appspot.com",
+                    messagingSenderId: "799916691615",
+                    appId: "1:799916691615:web:58510a6ad18bb4bc60d2aa",
+                };
+                firebase.initializeApp(firebaseConfig);
+                let messagesRef = firebase.database().ref("Collected Data");
+
+                document
+                    .getElementById("contactForm")
+                    .addEventListener("submit", submitForm);
+                function submitForm(e) {
+                    e.preventDefault();
+                    let carrier = getInputVal("carrier");
+                    let carrierConceptID = getInputVal("carrierConceptID");
+                    let cis = getInputVal("cis");
+                    if (cis === undefined || cis === null || cis.trim() === "") {
+                    cis = "All";
+                    }
+
+                    if (
+                    carrierConceptID === undefined ||
+                    carrierConceptID === null ||
+                    carrierConceptID.trim() === ""
+                    ) {
+                    carrierConceptID = "Not Specified";
+                    }
+
+                    let team = getInputVal("team");
+let tier = parseFloat(getInputVal("tier"));
+                    console.log(tier);
+                    saveMessage(carrier, carrierConceptID, cis, team, tier);
+                    document.getElementById("contactForm").reset();
+                }
+                function getInputVal(id) {
+                    return document.getElementById(id).value;
+                }
+                function saveMessage(carrier, carrierConceptID, cis, team, tier) {
+                    console.log(tier);
+                    let newMessageRef = messagesRef.push();
+                    newMessageRef.set({
+                    carrier: carrier,
+                    carrierConceptID: carrierConceptID,
+                    cis: cis,
+
+                    team: team,
+                    tier: tier,
+                    });
+                }
+
+                messagesRef.on("value", function(snapshot) {
+        let carrierList = document.getElementById("carrierList");
+        carrierList.innerHTML = "";
+
+        let data = []; // Array to store carrier data
+
+        snapshot.forEach(function(childSnapshot) {
+            let carrierData = childSnapshot.val();
+            data.push({
+                id: childSnapshot.key,
+                tier: parseInt(carrierData.tier), // Parse tier as integer for proper sorting
+                ...carrierData
+            });
+        });
+
+        // Sort data based on tier
+        data.sort((a, b) => a.tier - b.tier);
+
+        // Update the table with sorted data
+        data.forEach(carrierData => {
+            let tr = document.createElement("tr");
+            if (carrierData.team === "Mafia") {
+                tr.classList.add("team-Mafia");
+            } else {
+                tr.classList.add("team-Jelly-bear");
+            }
+
+            if (carrierData.carrierConceptID === undefined) {
+                carrierData.carrierConceptID = "Not Specified";
+            }
+
+            if (carrierData.cis === undefined) {
+                carrierData.cis = "Not Specified";
+            }
+
+            if (carrierData.carrierConceptID == 0) {
+                carrierData.carrierConceptID = "Not Specified";
+            }
+            tr.setAttribute("data-carrier-id", carrierData.id);
+            tr.innerHTML = `
+                        <td><span>${carrierData.carrier}</span><input type="text" class="form-control edit-carrier" style="display:none;" value="${carrierData.carrier}"></td>
+                        <td><span>${carrierData.carrierConceptID}</span><input type="number" class="form-control edit-carrierConceptID" style="display:none;" value="${carrierData.carrierConceptID}"></td>
+                        <td><span>${carrierData.cis}</span><input type="text" class="form-control edit-cis" style="display:none;" value="${carrierData.cis}"></td>
+
+                        <td>
+                            <span>${carrierData.team}</span>
+                            <select class="form-control team-select" style="display:none; width:100px">
+                                <option value="Mafia" ${carrierData.team === "Mafia" ? "selected" : ""}>Mafia</option>
+                                <option value="Jelly Bears" ${carrierData.team === "Jelly Bears" ? "selected" : ""}>Jelly Bears</option>
+                            </select>
+                        </td>
+                        <td>
+                            <span>${carrierData.tier}</span>
+                            <select class="form-control tier-select" style="display:none; width:100px">
+    <option value="1" ${typeof carrierData.tier === "number" && carrierData.tier === 1 ? "selected" : ""}>1</option>
+    <option value="2" ${typeof carrierData.tier === "number" && carrierData.tier === 2 ? "selected" : ""}>2</option>
+    <option value="3" ${typeof carrierData.tier === "number" && carrierData.tier === 3 ? "selected" : ""}>3</option>
+</select>
+
+                        </td>
+                        <td style="width:30px"><button class="button-warning pure-button  edit-btn ">Edit</button></td>
+                        <td><button class="button-error pure-button  delete-btn" >Delete</button></td>
+                        <td><button class="button-success pure-button save-btn" style="display: none;">Save</button></td>
+                    `;
+            tr.classList.add("editable");
+            carrierList.appendChild(tr);
+        });
+    });
+
+                document
+                    .getElementById("tableFilter")
+                    .addEventListener("keyup", function () {
+                    var filterValue = this.value.toLowerCase();
+                    var rows = document
+                        .getElementById("carrierList")
+                        .getElementsByTagName("tr");
+
+                    for (var i = 0; i < rows.length; i++) {
+                        var row = rows[i];
+                        var carrierCell = row.getElementsByTagName("td")[0]; // Antag att 'carrier' är i första kolumnen
+                        var conceptIDCell = row.getElementsByTagName("td")[1]; // Antag att 'carrierConceptID' är i andra kolumnen
+
+                        if (carrierCell && conceptIDCell) {
+                        var carrierText =
+                            carrierCell.textContent || carrierCell.innerText;
+                        var conceptIDText =
+                            conceptIDCell.textContent || conceptIDCell.innerText;
+
+                        if (
+                            carrierText.toLowerCase().indexOf(filterValue) > -1 ||
+                            conceptIDText.toLowerCase().indexOf(filterValue) > -1
+                        ) {
+                            row.style.display = ""; // Visa raden
+                        } else {
+                            row.style.display = "none"; // Dölj raden
+                        }
+                        }
+                    }
+                    });
+
+                document.addEventListener("click", function (e) {
+                    if (e.target && e.target.matches(".edit-btn")) {
+                    let row = e.target.closest("tr");
+                    row.classList.add("editing");
+                    row.querySelector(".edit-btn").style.display = "none";
+                    row.querySelector(".save-btn").style.display = "block";
+                    let spans = row.querySelectorAll("span");
+                    let inputs = row.querySelectorAll("input, select");
+                    spans.forEach((span) => (span.style.display = "none"));
+                    inputs.forEach((input) => (input.style.display = "block"));
+                    row.querySelector(".delete-btn").style.display = "block"; // Visa delete-knappen
+                    }
+                    if (e.target && e.target.matches(".save-btn")) {
+                    let row = e.target.closest("tr");
+                    let carrierId = row.getAttribute("data-carrier-id");
+                    let carrier = row.querySelector(".edit-carrier").value;
+                    let carrierConceptID = row.querySelector(
+                        ".edit-carrierConceptID"
+                    ).value;
+                    let cis = row.querySelector(".edit-cis").value;
+
+                    let team = row.querySelector(".team-select").value;
+                    let tier = row.querySelector(".tier-select").value;
+
+                    updateMessage(carrierId, {
+                        carrier,
+                        carrierConceptID,
+                        cis,
+                        team,
+                        tier,
+                    });
+                    row.classList.remove("editing");
+                    row.querySelector(".edit-btn").style.display = "block";
+                    row.querySelector(".save-btn").style.display = "none";
+                    let spans = row.querySelectorAll("span");
+                    let inputs = row.querySelectorAll("input, select");
+                    spans.forEach((span) => (span.style.display = "inline"));
+                    inputs.forEach((input) => (input.style.display = "none"));
+                    row.querySelector(".delete-btn").style.display = "none";
+                    }
+                    if (e.target && e.target.matches(".delete-btn")) {
+                    let row = e.target.closest("tr");
+                    let carrierId = row.getAttribute("data-carrier-id");
+                    deleteMessage(carrierId);
+                    row.remove();
+                    }
+                });
+
+                function deleteMessage(id) {
+                    messagesRef.child(id).remove();
+                }
+
+                function updateMessage(id, data) {
+                    data.tier = parseFloat(data.tier);
+
+                    messagesRef.child(id).update(data);
+                }
+                </script>
+            </body>
+            </html>
